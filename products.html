@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Məhsullarımız | Narıncgül</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+<div class="wrap nav">
+<a href="index.html" class="logo">Narınc<span>gül</span></a>
+<nav id="nav"><ul>
+<li><a href="index.html" class="">Əsas səhifə</a></li>
+<li><a href="products.html" class="active">Məhsullar</a></li>
+<li><a href="about.html" class="">Haqqımızda</a></li>
+<li><a href="contact.html" class="">Əlaqə</a></li>
+</ul></nav>
+<div style="display:flex;gap:14px;align-items:center">
+<button type="button" class="auth-btn" id="auth-btn">Daxil ol</button>
+<button class="cart-btn" id="open-cart" aria-label="Səbət"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="count">0</span></button>
+<button class="menu-btn" id="menu-btn">Menyu</button>
+</div>
+</div>
+</header>
+
+<div class="page-banner"><div class="wrap">
+<h1>Kolleksiyalarımız</h1>
+<p>Bütün sirğalar, üzüklər, boyunbağılar, qolbaqlar və zəncirlər</p>
+</div></div>
+
+<section style="padding: 20px 0 100px;"><div class="wrap">
+<div class="search-box">
+<input type="text" id="p-search" placeholder="Məhsul adı ilə axtarın..." aria-label="Axtarış">
+</div>
+
+<div class="filters" id="filters">
+<button type="button" class="on" data-c="Hamısı">Hamısı</button>
+<button type="button" data-c="Sirğalar">Sirğalar</button>
+<button type="button" data-c="Üzüklər">Üzüklər</button>
+<button type="button" data-c="Qolbaqlar">Qolbaqlar</button>
+<button type="button" data-c="Boyunbağılar">Boyunbağılar</button>
+<button type="button" data-c="Bel zəncirləri">Bel zəncirləri</button>
+</div>
+
+<div class="grid" id="grid"></div>
+</div></section>
+
+<footer id="contact"><div class="wrap">
+<div class="fgrid">
+<div><h4>Narıncgül</h4><p>Zərif bijuteriya, romantik detallar.</p></div>
+<div><h4>Əlaqə</h4><a href="tel:+994702036566">070 203 65 66</a><a href="mailto:aytenhummetova2007@gmail.com">aytenhummetova2007@gmail.com</a></div>
+<div><h4>Qurucular</h4><p>Melek Məmmədova</p><p>Aytən Hümmətova</p><p>Ülvi Şirəliyev</p><p>Rasim Xəlilov</p></div>
+<div><h4>Sosial media</h4><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a><a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a><a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a></div>
+</div>
+<div class="copy">© 2026 Narıncgül. Bütün hüquqlar qorunur.</div>
+</div></footer>
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Səbət">
+<div class="dh"><h3>Səbətiniz</h3><button class="x" id="close-cart" aria-label="Bağla">&times;</button></div>
+<div id="cart-items"></div>
+<div class="df">
+<div class="promo-row"><input id="pc" placeholder="Kart kodu" aria-label="Kart kodu"><button id="pa" type="button">Tətbiq et</button></div>
+<div class="disc-line" id="disc" style="display:none"><span>Kart endirimi (10%)</span><span id="discv"></span></div>
+<div class="total"><span>Cəmi</span><span id="total">0 ₼</span></div>
+<button class="btn" id="checkout">Sifarişi tamamla</button>
+</div>
+</aside>
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/products-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script>
+let currentFilter = "Hamısı";
+let searchQuery = "";
+
+function renderCatalog() {
+    const g = document.querySelector("#grid");
+    if (!g || typeof products === "undefined") return;
+    g.innerHTML = "";
+
+    const filtered = products.filter(p => {
+        const matchCategory = currentFilter === "Hamısı" || p.category === currentFilter;
+        const matchSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.desc.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchCategory && matchSearch;
+    });
+
+    filtered.forEach(p => {
+        const c = document.createElement("article");
+        c.className = "card";
+        c.innerHTML = `
+            <div class="imgbox">
+                <span class="badge">-${pct(p)}%</span>
+                <button type="button" class="quick">Sürətli baxış</button>
+            </div>
+            <div class="info">
+                <span class="cat">${p.category}</span>
+                <h3>${p.name}</h3>
+                <span class="price">${fmt(p.price)} <s>${fmt(p.old)}</s></span>
+                <button type="button" class="btn add">Rəng seç və əlavə et</button>
+            </div>
+        `;
+        c.querySelector(".imgbox").prepend(imgTag(p));
+        c.querySelector(".quick").onclick = () => openModal(p);
+        c.querySelector(".add").onclick = () => openModal(p);
+        g.appendChild(c);
+    });
+
+    if (!filtered.length) {
+        g.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--soft);padding:60px 0;font-size:1.1rem">Axtarışınıza uyğun məhsul tapılmadı.</p>';
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Check URL parameters (e.g. ?cat=Sirğalar)
+    const urlParams = new URLSearchParams(window.location.search);
+    const catParam = urlParams.get("cat");
+    if (catParam) {
+        currentFilter = catParam;
+        document.querySelectorAll("#filters button").forEach(b => {
+            b.classList.toggle("on", b.dataset.c === catParam);
+        });
+    }
+
+    renderCatalog();
+
+    // Filter clicks
+    document.querySelectorAll("#filters button").forEach(b => {
+        b.onclick = () => {
+            document.querySelectorAll("#filters button").forEach(x => x.classList.remove("on"));
+            b.classList.add("on");
+            currentFilter = b.dataset.c;
+            renderCatalog();
+        };
+    });
+
+    // Search input
+    const searchInput = document.querySelector("#p-search");
+    if (searchInput) {
+        searchInput.oninput = e => {
+            searchQuery = e.target.value.trim();
+            renderCatalog();
+        };
+    }
+});
+</script>
+</body>
+</html>

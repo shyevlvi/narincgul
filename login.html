@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daxil ol / Qeydiyyat | Narıncgül</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+<div class="wrap nav">
+<a href="index.html" class="logo">Narınc<span>gül</span></a>
+<nav id="nav"><ul>
+<li><a href="index.html" class="">Əsas səhifə</a></li>
+<li><a href="products.html" class="">Məhsullar</a></li>
+<li><a href="about.html" class="">Haqqımızda</a></li>
+<li><a href="contact.html" class="">Əlaqə</a></li>
+</ul></nav>
+<div style="display:flex;gap:14px;align-items:center">
+<button type="button" class="auth-btn" id="auth-btn">Daxil ol</button>
+<button class="cart-btn" id="open-cart" aria-label="Səbət"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="count">0</span></button>
+<button class="menu-btn" id="menu-btn">Menyu</button>
+</div>
+</div>
+</header>
+
+<div class="auth-page-wrap">
+<div class="auth-card">
+<h2 id="atitle">Daxil ol</h2>
+
+<div class="atabs" id="atabs">
+<button type="button" id="tab-in" class="on">Giriş</button>
+<button type="button" id="tab-up">Qeydiyyat</button>
+</div>
+
+<form id="aform" novalidate>
+<div id="f-name" style="display:none;margin-bottom:12px;">
+<label for="an">Adınız</label>
+<input id="an" maxlength="40" autocomplete="name" placeholder="Adınızı daxil edin">
+</div>
+
+<div id="f-email" style="margin-bottom:12px;">
+<label for="ae">E-poçt</label>
+<input id="ae" type="email" required autocomplete="email" placeholder="adiniz@example.com">
+</div>
+
+<div id="f-pass" style="margin-bottom:8px;">
+<label for="ap" id="aplabel">Şifrə</label>
+<input id="ap" type="password" minlength="6" required autocomplete="current-password" placeholder="••••••••">
+</div>
+
+<div id="f-forgot" style="text-align:right;margin-bottom:18px;">
+<button type="button" class="lnk" id="forgot">Şifrəni unutdum?</button>
+</div>
+
+<div id="f-pass2" style="display:none;margin-bottom:18px;">
+<label for="ap2">Şifrəni təkrarlayın</label>
+<input id="ap2" type="password" minlength="6" autocomplete="new-password" placeholder="••••••••">
+</div>
+
+<button class="btn" type="submit" id="asubmit" style="width:100%;margin-top:6px;">Daxil ol</button>
+</form>
+
+<div id="amsg" role="alert" style="margin-top:16px;"></div>
+
+<div id="f-back" style="display:none;text-align:center;margin-top:16px;">
+<button type="button" class="lnk" id="aback">&larr; Girişə qayıt</button>
+</div>
+
+<div style="text-align:center;margin-top:24px;border-top:1px solid var(--line);padding-top:16px;">
+<a href="index.html" class="lnk" style="font-size:.9rem;color:var(--soft);">&larr; Ana səhifəyə qayıt</a>
+</div>
+</div>
+</div>
+
+<footer id="contact"><div class="wrap">
+<div class="fgrid">
+<div><h4>Narıncgül</h4><p>Zərif bijuteriya, romantik detallar.</p></div>
+<div><h4>Əlaqə</h4><a href="tel:+994702036566">070 203 65 66</a><a href="mailto:aytenhummetova2007@gmail.com">aytenhummetova2007@gmail.com</a></div>
+<div><h4>Qurucular</h4><p>Melek Məmmədova</p><p>Aytən Hümmətova</p><p>Ülvi Şirəliyev</p><p>Rasim Xəlilov</p></div>
+<div><h4>Sosial media</h4><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a><a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a><a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a></div>
+</div>
+<div class="copy">© 2026 Narıncgül. Bütün hüquqlar qorunur.</div>
+</div></footer>
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Səbət">
+<div class="dh"><h3>Səbətiniz</h3><button class="x" id="close-cart" aria-label="Bağla">&times;</button></div>
+<div id="cart-items"></div>
+<div class="df">
+<div class="promo-row"><input id="pc" placeholder="Kart kodu" aria-label="Kart kodu"><button id="pa" type="button">Tətbiq et</button></div>
+<div class="disc-line" id="disc" style="display:none"><span>Kart endirimi (10%)</span><span id="discv"></span></div>
+<div class="total"><span>Cəmi</span><span id="total">0 ₼</span></div>
+<button class="btn" id="checkout">Sifarişi tamamla</button>
+</div>
+</aside>
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/products-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script>
+let mode = 'in';
+let busy = false;
+let recovering = false;
+const BACK = location.href.split('#')[0].split('?')[0];
+
+const msg = document.querySelector('#amsg');
+function say(t, type) {
+    if (!msg) return;
+    msg.textContent = t || '';
+    msg.className = t ? type : '';
+}
+
+function setMode(m) {
+    mode = m;
+    const up = m === 'up', rs = m === 'reset', nw = m === 'new', inn = m === 'in';
+    const show = (id, v) => { const el = document.querySelector(id); if (el) el.style.display = v ? 'block' : 'none'; };
+
+    show('#atabs', inn || up);
+    show('#f-name', up);
+    show('#f-email', !nw);
+    show('#f-pass', !rs);
+    show('#f-pass2', up || nw);
+    show('#f-forgot', inn);
+    show('#f-back', rs);
+
+    const tin = document.querySelector('#tab-in');
+    const tup = document.querySelector('#tab-up');
+    if (tin) tin.classList.toggle('on', !up);
+    if (tup) tup.classList.toggle('on', up);
+
+    const atitle = document.querySelector('#atitle');
+    if (atitle) atitle.textContent = up ? 'Qeydiyyat' : rs ? 'Şifrəni bərpa et' : nw ? 'Yeni şifrə təyin et' : 'Daxil ol';
+
+    const asubmit = document.querySelector('#asubmit');
+    if (asubmit) asubmit.textContent = up ? 'Qeydiyyatdan keç' : rs ? 'Sıfırlama linki göndər' : nw ? 'Şifrəni yenilə' : 'Daxil ol';
+
+    const aplabel = document.querySelector('#aplabel');
+    if (aplabel) aplabel.textContent = nw ? 'Yeni şifrə' : 'Şifrə';
+
+    const ap = document.querySelector('#ap');
+    if (ap) ap.autocomplete = (up || nw) ? 'new-password' : 'current-password';
+    say('');
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector('#tab-in').onclick = () => setMode('in');
+    document.querySelector('#tab-up').onclick = () => setMode('up');
+    document.querySelector('#forgot').onclick = () => {
+        const v = document.querySelector('#ae').value;
+        setMode('reset');
+        document.querySelector('#ae').value = v;
+    };
+    document.querySelector('#aback').onclick = () => setMode('in');
+
+    const form = document.querySelector('#aform');
+    form.onsubmit = async e => {
+        e.preventDefault();
+        if (busy) return;
+        if (!db) {
+            say('Giriş xidməti yüklənmədi. İnternet bağlantısını yoxlayın.', 'err');
+            return;
+        }
+
+        const email = document.querySelector('#ae').value.trim();
+        const pw = document.querySelector('#ap').value;
+        const name = document.querySelector('#an') ? document.querySelector('#an').value.trim() : '';
+
+        if (mode !== 'new' && !/^\S+@\S+\.\S+$/.test(email)) {
+            say('E-poçt ünvanı düzgün deyil.', 'err');
+            return;
+        }
+        if (mode !== 'reset' && pw.length < 6) {
+            say('Şifrə ən azı 6 simvol olmalıdır.', 'err');
+            return;
+        }
+        if (mode === 'up' && !name) {
+            say('Adınızı yazın.', 'err');
+            return;
+        }
+        if ((mode === 'up' || mode === 'new') && pw !== document.querySelector('#ap2').value) {
+            say('Şifrələr eyni deyil.', 'err');
+            return;
+        }
+
+        busy = true;
+        const subBtn = document.querySelector('#asubmit');
+        subBtn.disabled = true;
+        say('');
+
+        try {
+            if (mode === 'reset') {
+                const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: BACK });
+                if (error) throw error;
+                say('Şifrəni yeniləmək üçün link göndərildi. E-poçtunuzu və spam qovluğunu yoxlayın.', 'ok');
+            } else if (mode === 'new') {
+                const { data, error } = await db.auth.updateUser({ password: pw });
+                if (error) throw error;
+                recovering = false;
+                toast('Şifrəniz yeniləndi');
+                setTimeout(() => { window.location.href = 'profile.html'; }, 500);
+            } else if (mode === 'up') {
+                const { data, error } = await db.auth.signUp({
+                    email,
+                    password: pw,
+                    options: { data: { full_name: name } }
+                });
+                if (error) throw error;
+                if (data.user && data.user.identities && data.user.identities.length === 0) {
+                    say('Bu e-poçt artıq qeydiyyatdan keçib. Giriş edin.', 'err');
+                } else if (!data.session) {
+                    say('Qeydiyyat uğurludur. E-poçtunuza göndərilən təsdiq linkinə basın, sonra daxil olun.', 'ok');
+                    form.reset();
+                } else {
+                    toast('Qeydiyyat tamamlandı. Xoş gəldiniz!');
+                    setTimeout(() => { window.location.href = 'profile.html'; }, 500);
+                }
+            } else {
+                const { error } = await db.auth.signInWithPassword({ email, password: pw });
+                if (error) throw error;
+                toast('Uğurla daxil oldunuz');
+                setTimeout(() => { window.location.href = 'profile.html'; }, 500);
+            }
+        } catch (err) {
+            say(az(err), 'err');
+        } finally {
+            busy = false;
+            subBtn.disabled = false;
+        }
+    };
+});
+
+function onAuthSessionInit(user) {
+    if (user && !recovering) {
+        // If already logged in, redirect to profile
+        window.location.href = 'profile.html';
+    }
+}
+
+function onAuthStateChanged(ev, session) {
+    if (ev === 'PASSWORD_RECOVERY') {
+        recovering = true;
+        setMode('new');
+    }
+}
+</script>
+</body>
+</html>

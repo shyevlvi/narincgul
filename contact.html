@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Əlaqə | Narıncgül</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+<div class="wrap nav">
+<a href="index.html" class="logo">Narınc<span>gül</span></a>
+<nav id="nav"><ul>
+<li><a href="index.html" class="">Əsas səhifə</a></li>
+<li><a href="products.html" class="">Məhsullar</a></li>
+<li><a href="about.html" class="">Haqqımızda</a></li>
+<li><a href="contact.html" class="active">Əlaqə</a></li>
+</ul></nav>
+<div style="display:flex;gap:14px;align-items:center">
+<button type="button" class="auth-btn" id="auth-btn">Daxil ol</button>
+<button class="cart-btn" id="open-cart" aria-label="Səbət"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="count">0</span></button>
+<button class="menu-btn" id="menu-btn">Menyu</button>
+</div>
+</div>
+</header>
+
+<div class="page-banner"><div class="wrap">
+<h1>Bizimlə əlaqə</h1>
+<p>Suallarınız, fərdi sifarişlər və ya əməkdaşlıq üçün bizə yazın</p>
+</div></div>
+
+<section style="padding: 20px 0 100px;"><div class="wrap">
+<div class="contact-grid">
+
+<div class="contact-card">
+<h3 style="font-size:1.8rem;margin-bottom:24px;">Əlaqə məlumatları</h3>
+
+<div class="contact-item">
+<div class="c-icon">📞</div>
+<div>
+<h4>Telefon</h4>
+<p><a href="tel:+994702036566">070 203 65 66</a></p>
+<small style="color:var(--soft);">Hər gün 10:00 - 20:00</small>
+</div>
+</div>
+
+<div class="contact-item">
+<div class="c-icon">✉</div>
+<div>
+<h4>E-poçt</h4>
+<p><a href="mailto:aytenhummetova2007@gmail.com">aytenhummetova2007@gmail.com</a></p>
+<small style="color:var(--soft);">24 saat ərzində cavablandırılır</small>
+</div>
+</div>
+
+<div class="contact-item">
+<div class="c-icon">📍</div>
+<div>
+<h4>Ünvan</h4>
+<p>Bakı şəhəri, Azərbaycan</p>
+<small style="color:var(--soft);">Onlayn çatdırılma xidməti</small>
+</div>
+</div>
+
+<div style="margin-top:32px;">
+<h4>Sosial şəbəkələrdə bizi izləyin</h4>
+<div class="social-badges">
+<a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+<a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+<a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">TT</a>
+</div>
+</div>
+</div>
+
+<div class="contact-card">
+<h3 style="font-size:1.8rem;margin-bottom:24px;">Bizə mesaj yazın</h3>
+<form class="c-form" id="contact-form">
+<div class="form-group">
+<label for="c-name">Adınız və Soyadınız</label>
+<input id="c-name" required placeholder="Məs. Nigar Əliyeva">
+</div>
+<div class="form-group">
+<label for="c-email">E-poçt ünvanınız</label>
+<input id="c-email" type="email" required placeholder="nigar@example.com">
+</div>
+<div class="form-group">
+<label for="c-phone">Telefon nömrəniz</label>
+<input id="c-phone" type="tel" placeholder="+994 50 123 45 67">
+</div>
+<div class="form-group">
+<label for="c-msg">Mesajınız</label>
+<textarea id="c-msg" rows="5" required placeholder="Sualınız və ya qeydləriniz..."></textarea>
+</div>
+<button type="submit" class="btn" style="width:100%;">Mesajı göndər</button>
+</form>
+</div>
+
+</div>
+</div></section>
+
+<footer id="contact"><div class="wrap">
+<div class="fgrid">
+<div><h4>Narıncgül</h4><p>Zərif bijuteriya, romantik detallar.</p></div>
+<div><h4>Əlaqə</h4><a href="tel:+994702036566">070 203 65 66</a><a href="mailto:aytenhummetova2007@gmail.com">aytenhummetova2007@gmail.com</a></div>
+<div><h4>Qurucular</h4><p>Melek Məmmədova</p><p>Aytən Hümmətova</p><p>Ülvi Şirəliyev</p><p>Rasim Xəlilov</p></div>
+<div><h4>Sosial media</h4><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a><a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a><a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a></div>
+</div>
+<div class="copy">© 2026 Narıncgül. Bütün hüquqlar qorunur.</div>
+</div></footer>
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Səbət">
+<div class="dh"><h3>Səbətiniz</h3><button class="x" id="close-cart" aria-label="Bağla">&times;</button></div>
+<div id="cart-items"></div>
+<div class="df">
+<div class="promo-row"><input id="pc" placeholder="Kart kodu" aria-label="Kart kodu"><button id="pa" type="button">Tətbiq et</button></div>
+<div class="disc-line" id="disc" style="display:none"><span>Kart endirimi (10%)</span><span id="discv"></span></div>
+<div class="total"><span>Cəmi</span><span id="total">0 ₼</span></div>
+<button class="btn" id="checkout">Sifarişi tamamla</button>
+</div>
+</aside>
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/products-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const cf = document.querySelector("#contact-form");
+    if (cf) {
+        cf.onsubmit = e => {
+            e.preventDefault();
+            cf.reset();
+            toast("Mesajınız göndərildi. Tezliklə sizinlə əlaqə saxlayacağıq.");
+        };
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profilim | Narıncgül</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+<div class="wrap nav">
+<a href="index.html" class="logo">Narınc<span>gül</span></a>
+<nav id="nav"><ul>
+<li><a href="index.html" class="">Əsas səhifə</a></li>
+<li><a href="products.html" class="">Məhsullar</a></li>
+<li><a href="about.html" class="">Haqqımızda</a></li>
+<li><a href="contact.html" class="">Əlaqə</a></li>
+</ul></nav>
+<div style="display:flex;gap:14px;align-items:center">
+<button type="button" class="auth-btn" id="auth-btn">Daxil ol</button>
+<button class="cart-btn" id="open-cart" aria-label="Səbət"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="count">0</span></button>
+<button class="menu-btn" id="menu-btn">Menyu</button>
+</div>
+</div>
+</header>
+
+<div class="pp-wrap">
+<h1>Hesab məlumatları</h1>
+<div class="pp-card">
+
+<div class="pp-av">
+<div class="pp-avimg" id="pp-avimg">?</div>
+<div>
+<div class="pp-btns">
+<input type="file" id="pp-file" accept="image/jpeg,image/png,image/webp" style="display:none">
+<button type="button" class="btn" id="pp-pick" style="padding:9px 22px;font-size:.9rem">Şəkil seç</button>
+<button type="button" class="btn ghost" id="pp-rm" style="padding:9px 22px;font-size:.9rem">Şəkli sil</button>
+</div>
+<div class="pp-hint">Maks. 5 MB (JPG, PNG, WebP). Kvadrat kəsilir.</div>
+</div>
+</div>
+
+<form id="pp-form" novalidate style="margin-top:20px;">
+<div class="pp-grid">
+<div><label for="pf">Ad</label><input id="pf" maxlength="40" required autocomplete="given-name"></div>
+<div><label for="pl">Soyad</label><input id="pl" maxlength="40" required autocomplete="family-name"></div>
+<div><label for="pph">Telefon nömrəsi</label><input id="pph" type="tel" maxlength="24" placeholder="+994 50 123 45 67" autocomplete="tel"></div>
+<div><label for="pb">Təvəllüd</label><input id="pb" type="date" min="1900-01-01" autocomplete="bday"></div>
+</div>
+<label for="pe">E-poçt</label>
+<input id="pe" type="email" readonly style="margin-bottom:20px;">
+<button class="btn" type="submit" id="pp-save" style="width:100%;">Yadda saxla</button>
+</form>
+
+<div id="pp-msg" role="alert"></div>
+
+<div class="pp-foot">
+<button type="button" class="lnk" id="pp-logout" style="color:var(--pink-d);font-weight:600;">Hesabdan çıx</button>
+</div>
+
+</div>
+</div>
+
+<footer id="contact"><div class="wrap">
+<div class="fgrid">
+<div><h4>Narıncgül</h4><p>Zərif bijuteriya, romantik detallar.</p></div>
+<div><h4>Əlaqə</h4><a href="tel:+994702036566">070 203 65 66</a><a href="mailto:aytenhummetova2007@gmail.com">aytenhummetova2007@gmail.com</a></div>
+<div><h4>Qurucular</h4><p>Melek Məmmədova</p><p>Aytən Hümmətova</p><p>Ülvi Şirəliyev</p><p>Rasim Xəlilov</p></div>
+<div><h4>Sosial media</h4><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a><a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a><a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a></div>
+</div>
+<div class="copy">© 2026 Narıncgül. Bütün hüquqlar qorunur.</div>
+</div></footer>
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Səbət">
+<div class="dh"><h3>Səbətiniz</h3><button class="x" id="close-cart" aria-label="Bağla">&times;</button></div>
+<div id="cart-items"></div>
+<div class="df">
+<div class="promo-row"><input id="pc" placeholder="Kart kodu" aria-label="Kart kodu"><button id="pa" type="button">Tətbiq et</button></div>
+<div class="disc-line" id="disc" style="display:none"><span>Kart endirimi (10%)</span><span id="discv"></span></div>
+<div class="total"><span>Cəmi</span><span id="total">0 ₼</span></div>
+<button class="btn" id="checkout">Sifarişi tamamla</button>
+</div>
+</aside>
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/products-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script>
+let pendingBlob = null;
+let pendingUrl = null;
+let removeAv = false;
+let pbusy = false;
+
+const ppmsg = document.querySelector('#pp-msg');
+function ppsay(t, type) {
+    if (!ppmsg) return;
+    ppmsg.textContent = t || '';
+    ppmsg.className = t ? type : '';
+}
+
+function renderAv(url) {
+    const box = document.querySelector('#pp-avimg');
+    if (!box) return;
+    box.textContent = '';
+    const m = meta(curUser);
+    const ini = ((splitName(m)[0] || (curUser && curUser.email) || '?')[0] || '?').toUpperCase();
+    if (url) {
+        const i = new Image();
+        i.alt = 'Profil şəkli';
+        i.src = url;
+        i.onerror = () => { box.textContent = ini; };
+        box.appendChild(i);
+    } else {
+        box.textContent = ini;
+    }
+}
+
+function fillProfile() {
+    if (!curUser) return;
+    const m = meta(curUser);
+    const n = splitName(m);
+    document.querySelector('#pf').value = n[0];
+    document.querySelector('#pl').value = n[1];
+    document.querySelector('#pph').value = m.phone || '';
+    document.querySelector('#pb').value = m.birth_date || '';
+    document.querySelector('#pe').value = curUser.email || '';
+    if (pendingUrl) { URL.revokeObjectURL(pendingUrl); pendingUrl = null; }
+    pendingBlob = null;
+    removeAv = false;
+    renderAv(m.avatar_url || null);
+    ppsay('');
+}
+
+function resizeImg(file, size) {
+    return new Promise((res, rej) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+            URL.revokeObjectURL(url);
+            const s = Math.min(img.width, img.height);
+            const c = document.createElement('canvas');
+            c.width = c.height = size;
+            const x = c.getContext('2d');
+            x.fillStyle = '#fff';
+            x.fillRect(0, 0, size, size);
+            x.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, size, size);
+            c.toBlob(b => b ? res(b) : rej(new Error('blob')), 'image/jpeg', .85);
+        };
+        img.onerror = () => {
+            URL.revokeObjectURL(url);
+            rej(new Error('img'));
+        };
+        img.src = url;
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector('#pp-pick').onclick = () => document.querySelector('#pp-file').click();
+    document.querySelector('#pp-file').onchange = async e => {
+        const f = e.target.files[0];
+        e.target.value = '';
+        if (!f) return;
+        if (!/^image\/(jpeg|png|webp)$/.test(f.type)) {
+            ppsay('Yalnız JPG, PNG və ya WebP şəkil seçin.', 'err');
+            return;
+        }
+        if (f.size > 5 * 1024 * 1024) {
+            ppsay('Şəkil 5 MB-dən böyük olmamalıdır.', 'err');
+            return;
+        }
+        try {
+            const blob = await resizeImg(f, 400);
+            if (pendingUrl) URL.revokeObjectURL(pendingUrl);
+            pendingBlob = blob;
+            removeAv = false;
+            pendingUrl = URL.createObjectURL(blob);
+            renderAv(pendingUrl);
+            ppsay('Şəkil seçildi. Təsdiq üçün “Yadda saxla” düyməsinə basın.', 'ok');
+        } catch (err) {
+            ppsay('Şəkil oxunmadı. Başqa şəkil seçin.', 'err');
+        }
+    };
+
+    document.querySelector('#pp-rm').onclick = () => {
+        if (pendingUrl) { URL.revokeObjectURL(pendingUrl); pendingUrl = null; }
+        pendingBlob = null;
+        removeAv = true;
+        renderAv(null);
+        ppsay('Şəkil silinəcək. Təsdiq üçün “Yadda saxla” düyməsinə basın.', 'ok');
+    };
+
+    document.querySelector('#pp-form').onsubmit = async e => {
+        e.preventDefault();
+        if (pbusy) return;
+        if (!db || !curUser) {
+            ppsay('Əvvəlcə daxil olun.', 'err');
+            return;
+        }
+        const first = document.querySelector('#pf').value.trim();
+        const last = document.querySelector('#pl').value.trim();
+        const phone = document.querySelector('#pph').value.trim();
+        const bd = document.querySelector('#pb').value;
+
+        if (!first) { ppsay('Adınızı yazın.', 'err'); return; }
+        if (!last) { ppsay('Soyadınızı yazın.', 'err'); return; }
+        if (phone && !/^\+?\d{7,15}$/.test(phone.replace(/[\s\-()]/g, ''))) {
+            ppsay('Telefon nömrəsi düzgün deyil. Nümunə: +994 50 123 45 67', 'err');
+            return;
+        }
+        if (bd) {
+            const d = new Date(bd + 'T00:00:00');
+            if (isNaN(d) || d > new Date() || bd < '1900-01-01') {
+                ppsay('Təvəllüd tarixi düzgün deyil.', 'err');
+                return;
+            }
+        }
+
+        pbusy = true;
+        document.querySelector('#pp-save').disabled = true;
+        ppsay('');
+
+        let warn = '', avatar = meta(curUser).avatar_url || null;
+        try {
+            const path = curUser.id + '/avatar.jpg';
+            if (pendingBlob) {
+                try {
+                    const { error } = await db.storage.from('avatars').upload(path, pendingBlob, {
+                        upsert: true,
+                        contentType: 'image/jpeg',
+                        cacheControl: '3600'
+                    });
+                    if (error) throw error;
+                    avatar = db.storage.from('avatars').getPublicUrl(path).data.publicUrl + '?v=' + Date.now();
+                } catch (er) {
+                    warn = 'Şəkil yüklənmədi (Supabase-də “avatars” bucket-ini və icazələri yoxlayın). ';
+                }
+            } else if (removeAv) {
+                try { await db.storage.from('avatars').remove([path]); } catch (er) {}
+                avatar = null;
+            }
+
+            const { data, error } = await db.auth.updateUser({
+                data: {
+                    first_name: first,
+                    last_name: last,
+                    full_name: (first + ' ' + last).trim(),
+                    phone: phone || null,
+                    birth_date: bd || null,
+                    avatar_url: avatar
+                }
+            });
+            if (error) throw error;
+            curUser = data.user;
+            updateHeaderAuth(curUser);
+            fillProfile();
+            if (warn) ppsay(warn + 'Digər məlumatlar yadda saxlanıldı.', 'err');
+            else {
+                ppsay('Profil yeniləndi.', 'ok');
+                toast('Profil yeniləndi');
+            }
+        } catch (err) {
+            ppsay(az(err), 'err');
+        } finally {
+            pbusy = false;
+            document.querySelector('#pp-save').disabled = false;
+        }
+    };
+
+    document.querySelector('#pp-logout').onclick = doLogout;
+});
+
+function onAuthSessionInit(user) {
+    if (!user) {
+        // Redirect to login if not authenticated
+        window.location.href = 'login.html';
+    } else {
+        fillProfile();
+    }
+}
+</script>
+</body>
+</html>
